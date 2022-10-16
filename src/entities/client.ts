@@ -1,4 +1,6 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany } from "typeorm";
+import { Banker } from "./banker";
+import { Transaction } from "./transaction";
 
 import { Person } from "./utils/person";
 
@@ -35,4 +37,15 @@ export class Client extends Person {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(
+    () => Transaction,
+    (transaction) => transaction.client
+  )
+  transactions: Transaction[];
+
+  @ManyToMany((type) => Banker, {
+    cascade: true,
+  })
+  bankers: Banker[];
 }
